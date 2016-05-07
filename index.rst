@@ -1,5 +1,5 @@
 .. conformal_predictors documentation master file, created by
-   sphinx-quickstart on Sat Apr 23 12:43:00 2016.
+   sphinx-quickstart on Mon Apr 25 23:42:09 2016.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 

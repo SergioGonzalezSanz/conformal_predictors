@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # conformal_predictors documentation build configuration file, created by
-# sphinx-quickstart on Sat Apr 23 12:43:00 2016.
+# sphinx-quickstart on Mon Apr 25 23:42:09 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -18,7 +18,7 @@ import os
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('./conformal_predictors'))
+sys.path.insert(0, os.path.abspath('.'))
 
 # -- General configuration ------------------------------------------------
 
