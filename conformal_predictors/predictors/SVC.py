@@ -13,20 +13,22 @@ class ConformalSVM(ConformalPredictor):
     def __init__(self, nc_measure, clf):
         super().__init__(nc_measure, clf)
 
-    def fit(self, x: np.ndarray, y: np.ndarray, sample_weight: np.array = np.empty(0)) -> None:
+    def fit(self, x: np.ndarray, y: np.ndarray,
+            sample_weight: np.array = np.empty(0)) -> None:
         self._clf.fit(x, y, sample_weight)
 
     def calibrate(self, cal: np.ndarray, cal_l: np.ndarray) -> None:
-
-        # Dimensions of the calibration set: (n_samples,n_classes)
         self._cal_l = cal_l
 
         # Alpha values of each calibration point for each class
-        self._cal_a = self._nc_measure.evaluate(self._clf, cal)
+        alphas = self._nc_measure.evaluate(self._clf, cal)
+
+        # Indices of the class in cal_l
         dict = self._clf.classes_.tolist()
-        multipliers = np.array([1 if dict.index(cal_l[i]) == j else -1 for i in range(cal.shape[0])
-                                for j in range(len(dict))]).reshape((cal.shape[0], len(dict)))
-        self._cal_a *= multipliers
+        l_pos = [dict.index(val) for val in cal_l]
+
+        # The alpha is chosen accordingly to the calibration label
+        self._cal_a = [alphas[i, l_pos[i]] for i in range(0, cal.shape[0])]
 
 
         # # Indices of the class in cal_l
@@ -40,11 +42,13 @@ class ConformalSVM(ConformalPredictor):
         self.check_calibrated()
         dict = self._clf.classes_.tolist()  # Classes labels
         alphas = self._nc_measure.evaluate(self._clf, x)
+        # print(alphas)
         predicted_l = np.array([0.0] * x.shape[0])
         confidence = np.array([0.0] * x.shape[0])
         credibility = np.array([0.0] * x.shape[0])
+
         for i in range(0, alphas.shape[0]):
-            p_values = self.compute_pvalue(alphas[i, :])
+            p_values = self.compute_pvalue(alphas[i])
             conformal = np.sort(p_values)
             predicted_l[i] = dict[np.argmax(p_values)]
             credibility[i] = conformal[-1]
