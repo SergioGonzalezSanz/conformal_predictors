@@ -30,11 +30,6 @@ class SVMTest(unittest.TestCase):
         self.assertEqual(1, confidence[0])
         self.assertEqual(1, confidence[1])
         self.assertEqual(1, confidence[2])
-        print(cp._clf.predict(x))
-        print(cp._nc_measure.evaluate(cp._clf, x))
-        print(predicted_l)
-        print(credibility)
-        print(confidence)
 
     def test_1(self):
         x = array([[1, 1], [2, 2], [3, 3], [4, 4]])

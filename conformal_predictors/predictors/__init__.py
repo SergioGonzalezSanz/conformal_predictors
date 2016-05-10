@@ -86,14 +86,14 @@ class ConformalPredictor:
     def compute_pvalue(self, alphas) -> float:
         # If the model is not calibrated we throw an exception
         self.check_calibrated()
-        resolution = 10000
         pvalues = np.array([0.0] * len(alphas))
-        for i in range(0, len(alphas)):
-            index = np.ix_(self._cal_l == self._clf.classes_[i])
-            # print(np.array(self._cal_a)[index])
-            calibration = np.round((np.array(self._cal_a)[index] * resolution).astype(int))
-            alpha = int(np.round(alphas[i] * resolution))
-            pvalues[i] = sum(calibration >= alpha) / (len(calibration) * 1.0)
-        # print(alphas)
-        # print(pvalues)
+        print(self._cal_l)
+        print(self._clf.classes_)
+        for i in range(len(alphas)):
+            print(self._clf.classes_[i])
+            idx = np.ix_(self._clf.classes_[i] == np.array(self._cal_l))
+            print(len(idx))
+            pvalues[i] = sum(self._cal_a[idx, i] >= alphas[i]) / (len(idx) * 1.0)
+        print(pvalues)
+        print(len(pvalues))
         return pvalues
